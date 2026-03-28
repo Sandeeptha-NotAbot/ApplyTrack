@@ -13,11 +13,12 @@
     }
     body { background: var(--bg); color: var(--text); font-family: var(--serif); min-height: 100vh; }
 
+    /* HEADER */
     header {
       position: sticky; top: 0; z-index: 10; background: var(--bg);
-      border-bottom: 1px solid var(--border); padding: 24px 40px 18px;
-      display: flex; align-items: flex-end; justify-content: space-between;
+      border-bottom: 1px solid var(--border); padding: 24px 40px 0;
     }
+    .header-top { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 16px; }
     .header-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 4px; }
     h1 { font-size: 26px; font-weight: 400; color: var(--bright); letter-spacing: -.02em; }
     #btn-add {
@@ -27,6 +28,18 @@
     }
     #btn-add.cancel { background: var(--surface); color: var(--dim); border-color: var(--border2); }
 
+    /* TABS */
+    .tabs { display: flex; gap: 0; }
+    .tab-btn {
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      padding: 10px 20px; font-size: 13px; font-family: var(--mono); color: var(--dim);
+      cursor: pointer; letter-spacing: .05em; transition: all .15s;
+    }
+    .tab-btn.active { color: var(--bright); border-bottom-color: #58a6ff; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* STATS BAR */
     #stats-bar { display: flex; border-bottom: 1px solid var(--border); overflow-x: auto; }
     .stat-btn {
       flex: 1; min-width: 90px; background: transparent; border: none;
@@ -41,6 +54,7 @@
 
     main { padding: 24px 40px; }
 
+    /* FORM */
     #form-wrap {
       background: var(--surface); border: 1px solid var(--border2);
       border-radius: 8px; padding: 24px; margin-bottom: 28px;
@@ -69,6 +83,7 @@
     }
     #btn-save:disabled { opacity: .4; cursor: default; }
 
+    /* CONTROLS */
     #controls { display: flex; gap: 12px; margin-bottom: 20px; }
     #search {
       flex: 1; background: var(--surface); border: 1px solid var(--border2);
@@ -82,6 +97,7 @@
       font-size: 13px; font-family: var(--mono); outline: none;
     }
 
+    /* APP LIST */
     #app-list { display: flex; flex-direction: column; gap: 8px; }
     .app-row {
       background: var(--surface); border: 1px solid var(--border);
@@ -123,79 +139,111 @@
     #empty p { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; }
     #footer { margin-top: 24px; text-align: center; font-size: 11px; color: #2d333b; font-family: var(--mono); letter-spacing: .08em; }
 
+    /* SANKEY TAB */
+    #sankey-panel { padding: 32px 40px; }
+    #sankey-panel h2 { font-size: 18px; font-weight: 400; color: var(--bright); margin-bottom: 6px; }
+    #sankey-panel .sankey-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .1em; margin-bottom: 32px; }
+    #sankey-svg-wrap {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 10px; padding: 32px; overflow: auto;
+    }
+    #sankey-empty {
+      text-align: center; padding: 60px 0; color: #484f58;
+      font-family: var(--mono); font-size: 13px; letter-spacing: .08em;
+    }
+
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 640px) {
-      header { padding: 16px; }
-      main { padding: 16px; }
+      header { padding: 16px 16px 0; }
+      main, #sankey-panel { padding: 16px; }
       .form-grid { grid-template-columns: 1fr; }
       .app-row { grid-template-columns: 1fr; }
-      .row-actions { flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <div>
-    <div class="header-sub" id="header-date"></div>
-    <h1>Job Search</h1>
+  <div class="header-top">
+    <div>
+      <div class="header-sub" id="header-date"></div>
+      <h1>Job Search</h1>
+    </div>
+    <button id="btn-add">+ Add Application</button>
   </div>
-  <button id="btn-add">+ Add Application</button>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tracker')">Tracker</button>
+    <button class="tab-btn" onclick="switchTab('sankey')">Funnel</button>
+  </div>
 </header>
 
-<div id="stats-bar"></div>
-
-<main>
-  <div id="form-wrap">
-    <div class="form-title" id="form-title">// new application</div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Company *</label>
-        <input id="f-company" type="text" placeholder="Acme Corp" />
+<!-- TRACKER TAB -->
+<div id="tab-tracker" class="tab-panel active">
+  <div id="stats-bar"></div>
+  <main>
+    <div id="form-wrap">
+      <div class="form-title" id="form-title">// new application</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Company *</label>
+          <input id="f-company" type="text" placeholder="Acme Corp" />
+        </div>
+        <div class="form-group">
+          <label>Role *</label>
+          <input id="f-role" type="text" placeholder="Software Engineer" />
+        </div>
+        <div class="form-group">
+          <label>Job Posting Link</label>
+          <input id="f-link" type="text" placeholder="https://..." />
+        </div>
+        <div class="form-group">
+          <label>Date Applied</label>
+          <input id="f-date" type="date" />
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="f-status"></select>
+        </div>
+        <div class="form-group full">
+          <label>Notes</label>
+          <textarea id="f-notes" rows="3" placeholder="Recruiter name, next steps, impressions..."></textarea>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Role *</label>
-        <input id="f-role" type="text" placeholder="Software Engineer" />
-      </div>
-      <div class="form-group">
-        <label>Job Posting Link</label>
-        <input id="f-link" type="text" placeholder="https://..." />
-      </div>
-      <div class="form-group">
-        <label>Date Applied</label>
-        <input id="f-date" type="date" />
-      </div>
-      <div class="form-group">
-        <label>Status</label>
-        <select id="f-status"></select>
-      </div>
-      <div class="form-group full">
-        <label>Notes</label>
-        <textarea id="f-notes" rows="3" placeholder="Recruiter name, next steps, impressions..."></textarea>
+      <div class="form-actions">
+        <button id="btn-save" disabled>Add Application</button>
       </div>
     </div>
-    <div class="form-actions">
-      <button id="btn-save" disabled>Add Application</button>
+
+    <div id="controls">
+      <input id="search" type="text" placeholder="Search company or role..." />
+      <select id="sort-select">
+        <option value="date_desc">Newest First</option>
+        <option value="date_asc">Oldest First</option>
+        <option value="company">A–Z Company</option>
+      </select>
+    </div>
+
+    <div id="app-list"></div>
+    <div id="empty">
+      <div class="empty-icon">◌</div>
+      <p id="empty-msg">No applications yet. Add your first one.</p>
+    </div>
+    <div id="footer"></div>
+  </main>
+</div>
+
+<!-- SANKEY TAB -->
+<div id="tab-sankey" class="tab-panel">
+  <div id="sankey-panel">
+    <h2>Application Funnel</h2>
+    <div class="sankey-sub">Where your applications end up</div>
+    <div id="sankey-svg-wrap">
+      <div id="sankey-empty">Add some applications to see your funnel.</div>
+      <svg id="sankey-svg" style="display:none;width:100%;"></svg>
     </div>
   </div>
-
-  <div id="controls">
-    <input id="search" type="text" placeholder="Search company or role..." />
-    <select id="sort-select">
-      <option value="date_desc">Newest First</option>
-      <option value="date_asc">Oldest First</option>
-      <option value="company">A–Z Company</option>
-    </select>
-  </div>
-
-  <div id="app-list"></div>
-  <div id="empty">
-    <div class="empty-icon">◌</div>
-    <p id="empty-msg">No applications yet. Add your first one.</p>
-  </div>
-  <div id="footer"></div>
-</main>
+</div>
 
 <script>
   const STATUSES = [
@@ -212,15 +260,13 @@
   let editId = null;
   let filterStatus = "all";
   let deleteConfirm = null;
+  let currentTab = "tracker";
 
   function loadApps() {
     try { apps = JSON.parse(localStorage.getItem("job_apps") || "[]"); } catch { apps = []; }
   }
-  function saveApps() {
-    localStorage.setItem("job_apps", JSON.stringify(apps));
-  }
+  function saveApps() { localStorage.setItem("job_apps", JSON.stringify(apps)); }
 
-  // Header date
   document.getElementById("header-date").textContent =
     new Date().toLocaleDateString("en-US", { year: "numeric", month: "long" });
 
@@ -248,15 +294,28 @@
     statsBar.appendChild(btn);
   });
 
+  // Tab switching
+  function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("tab-" + tab).classList.add("active");
+    document.querySelectorAll(".tab-btn")[tab === "tracker" ? 0 : 1].classList.add("active");
+    // Hide add button on sankey tab
+    document.getElementById("btn-add").style.display = tab === "tracker" ? "" : "none";
+    if (tab === "sankey") renderSankey();
+  }
+  window.switchTab = switchTab;
+
   // Form
-  const formWrap  = document.getElementById("form-wrap");
-  const btnAdd    = document.getElementById("btn-add");
-  const btnSave   = document.getElementById("btn-save");
-  const fCompany  = document.getElementById("f-company");
-  const fRole     = document.getElementById("f-role");
-  const fLink     = document.getElementById("f-link");
-  const fDate     = document.getElementById("f-date");
-  const fNotes    = document.getElementById("f-notes");
+  const formWrap = document.getElementById("form-wrap");
+  const btnAdd   = document.getElementById("btn-add");
+  const btnSave  = document.getElementById("btn-save");
+  const fCompany = document.getElementById("f-company");
+  const fRole    = document.getElementById("f-role");
+  const fLink    = document.getElementById("f-link");
+  const fDate    = document.getElementById("f-date");
+  const fNotes   = document.getElementById("f-notes");
 
   fDate.value = new Date().toISOString().split("T")[0];
 
@@ -297,27 +356,20 @@
   btnSave.addEventListener("click", () => {
     if (!fCompany.value.trim() || !fRole.value.trim()) return;
     const entry = {
-      id:      editId || Date.now(),
-      company: fCompany.value.trim(),
-      role:    fRole.value.trim(),
-      link:    fLink.value.trim(),
-      date:    fDate.value,
-      status:  fStatus.value,
-      notes:   fNotes.value.trim(),
+      id: editId || Date.now(),
+      company: fCompany.value.trim(), role: fRole.value.trim(),
+      link: fLink.value.trim(), date: fDate.value,
+      status: fStatus.value, notes: fNotes.value.trim(),
     };
     apps = editId ? apps.map(a => a.id === editId ? entry : a) : [...apps, entry];
-    saveApps();
-    closeForm();
-    render();
+    saveApps(); closeForm(); render();
   });
 
   document.getElementById("search").addEventListener("input", render);
   document.getElementById("sort-select").addEventListener("change", render);
 
   function esc(str) {
-    return String(str)
-      .replace(/&/g,"&amp;").replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
   }
 
   function render() {
@@ -353,11 +405,9 @@
       list.innerHTML = filtered.map(app => {
         const s = byId[app.status];
         const notes = app.notes
-          ? "— " + esc(app.notes.length > 60 ? app.notes.slice(0, 60) + "…" : app.notes)
-          : "";
+          ? "— " + esc(app.notes.length > 60 ? app.notes.slice(0, 60) + "…" : app.notes) : "";
         const linkHtml = app.link
-          ? `<a class="app-link" href="${esc(app.link)}" target="_blank" rel="noopener">↗</a>`
-          : "";
+          ? `<a class="app-link" href="${esc(app.link)}" target="_blank" rel="noopener">↗</a>` : "";
         const statusOpts = STATUSES.map(st =>
           `<option value="${st.id}"${st.id === app.status ? " selected" : ""}>${st.label}</option>`
         ).join("");
@@ -391,26 +441,152 @@
       }).join("");
     }
 
-    document.getElementById("footer").textContent =
-      `${apps.length} total · data saved to browser`;
+    document.getElementById("footer").textContent = `${apps.length} total · data saved to browser`;
   }
 
-  // Exposed handlers
-  function quickStatus(id, status) {
-    apps = apps.map(a => a.id === id ? {...a, status} : a);
-    saveApps(); render();
+  // ── SANKEY ──────────────────────────────────────────────────────────────────
+  function renderSankey() {
+    const svg    = document.getElementById("sankey-svg");
+    const empty  = document.getElementById("sankey-empty");
+    if (apps.length === 0) { svg.style.display = "none"; empty.style.display = "block"; return; }
+    empty.style.display = "none"; svg.style.display = "block";
+
+    const total        = apps.length;
+    const interviewed  = apps.filter(a => ["interviewed","rejected_after","offer","accepted"].includes(a.status)).length;
+    const rejBefore    = apps.filter(a => a.status === "rejected_before").length;
+    const noAnswer     = apps.filter(a => a.status === "applied").length;
+    const rejAfter     = apps.filter(a => a.status === "rejected_after").length;
+    const offers       = apps.filter(a => ["offer","accepted"].includes(a.status)).length;
+    const accepted     = apps.filter(a => a.status === "accepted").length;
+
+    // Layout constants
+    const W = 700, H = 420;
+    const col = [60, 240, 480, 640]; // x positions for node columns
+    const nodeW = 18;
+    const pad = 6;
+
+    // Node heights proportional to count (min 4px if nonzero)
+    function nh(n) { return n === 0 ? 0 : Math.max(4, Math.round((n / total) * (H - 80))); }
+
+    // Column 0: Applications (one node)
+    const appH = nh(total);
+    const appY = H / 2 - appH / 2;
+
+    // Column 1: Interviewed | No Answer | Rejected Before
+    const intH  = nh(interviewed);
+    const naH   = nh(noAnswer);
+    const rbH   = nh(rejBefore);
+    const col1Total = intH + naH + rbH + (interviewed > 0 ? pad : 0) + (noAnswer > 0 ? pad : 0);
+    let col1Y = H / 2 - col1Total / 2;
+    const intY  = col1Y;                               col1Y += intH  + (intH  > 0 ? pad : 0);
+    const naY   = col1Y;                               col1Y += naH   + (naH   > 0 ? pad : 0);
+    const rbY   = col1Y;
+
+    // Column 2: Rejected After | Offer
+    const raH   = nh(rejAfter);
+    const ofH   = nh(offers);
+    const col2Total = raH + ofH + (raH > 0 && ofH > 0 ? pad : 0);
+    let col2Y = intY + intH / 2 - col2Total / 2;
+    const raY   = col2Y;                               col2Y += raH + (raH > 0 ? pad : 0);
+    const ofY   = col2Y;
+
+    // Column 3: Accepted
+    const acH   = nh(accepted);
+    const acY   = ofY + ofH / 2 - acH / 2;
+
+    // Helper: smooth cubic bezier path between two rects
+    function flow(x1, y1, h1, x2, y2, h2, color, opacity=0.55) {
+      if (h1 <= 0 || h2 <= 0) return "";
+      const mx = (x1 + x2) / 2;
+      // top edge
+      const t = `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;
+      // bottom edge
+      const b = `L${x2},${y2+h2} C${mx},${y2+h2} ${mx},${y1+h1} ${x1},${y1+h1} Z`;
+      return `<path d="${t} ${b}" fill="${color}" opacity="${opacity}"/>`;
+    }
+
+    // Node rect
+    function node(x, y, h, color, label, count) {
+      if (h <= 0) return "";
+      const labelX = x + nodeW + 8;
+      const labelY = y + h / 2;
+      return `
+        <rect x="${x}" y="${y}" width="${nodeW}" height="${h}" rx="3" fill="${color}"/>
+        <text x="${labelX}" y="${labelY}" dominant-baseline="middle"
+          font-family="'Courier New',monospace" font-size="12" fill="#c9d1d9">
+          ${label} <tspan fill="${color}" font-weight="700">(${count})</tspan>
+        </text>`;
+    }
+
+    // Left-side labels
+    function nodeLeft(x, y, h, color, label, count) {
+      if (h <= 0) return "";
+      const labelX = x - 8;
+      const labelY = y + h / 2;
+      return `
+        <rect x="${x}" y="${y}" width="${nodeW}" height="${h}" rx="3" fill="${color}"/>
+        <text x="${labelX}" y="${labelY}" dominant-baseline="middle" text-anchor="end"
+          font-family="'Courier New',monospace" font-size="12" fill="#c9d1d9">
+          ${label} <tspan fill="${color}" font-weight="700">(${count})</tspan>
+        </text>`;
+    }
+
+    // Flow proportions from Applications (col0) into col1 nodes
+    // stack flows from the single app node
+    const appX = col[0] + nodeW;
+    // top portion → interviewed, middle → noAnswer, bottom → rejBefore
+    let flowSrcY = appY;
+
+    function proportionalFlow(srcY, srcH, srcTotal, count) {
+      // slice out a proportional chunk of srcH
+      const h = srcTotal > 0 ? Math.round((count / srcTotal) * srcH) : 0;
+      return { y: srcY, h };
+    }
+
+    const fInt = proportionalFlow(appY, appH, total, interviewed);
+    const fNa  = proportionalFlow(appY + fInt.h, appH - fInt.h, total - interviewed, noAnswer);
+    const fRb  = { y: appY + fInt.h + fNa.h, h: appH - fInt.h - fNa.h };
+
+    // From interviewed (col1) into col2
+    const intX = col[1] + nodeW;
+    const fRa  = proportionalFlow(intY, intH, interviewed, rejAfter);
+    const fOf  = { y: intY + fRa.h, h: intH - fRa.h };
+
+    // From offer (col2) into accepted (col3)
+    const ofX  = col[2] + nodeW;
+
+    let svgContent = `
+      ${flow(appX, fInt.y, fInt.h, col[1], intY, intH, "#6C8EBF")}
+      ${flow(appX, fNa.y,  fNa.h,  col[1], naY,  naH,  "#8b949e")}
+      ${flow(appX, fRb.y,  fRb.h,  col[1], rbY,  rbH,  "#8C5C5C")}
+
+      ${flow(intX, fRa.y, fRa.h, col[2], raY, raH, "#BF6C6C")}
+      ${flow(intX, fOf.y, fOf.h, col[2], ofY, ofH, "#6CBF8E")}
+
+      ${flow(ofX, ofY, ofH, col[3], acY, acH, "#4ABBA8")}
+
+      ${nodeLeft(col[0], appY, appH, "#8b949e", "Applications", total)}
+
+      ${node(col[1], intY,  intH, "#6C8EBF", "Interviewed",    interviewed)}
+      ${node(col[1], naY,   naH,  "#8b949e", "No Answer",      noAnswer)}
+      ${node(col[1], rbY,   rbH,  "#8C5C5C", "Rejected Early", rejBefore)}
+
+      ${node(col[2], raY, raH, "#BF6C6C", "Rejected",  rejAfter)}
+      ${node(col[2], ofY, ofH, "#6CBF8E", "Offers",    offers)}
+
+      ${node(col[3], acY, acH, "#4ABBA8", "Accepted",  accepted)}
+    `;
+
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.innerHTML = svgContent;
   }
-  function editApp(id) {
-    const app = apps.find(a => a.id === id);
-    if (app) openForm(app);
-  }
-  function askDelete(id)    { deleteConfirm = id;   render(); }
-  function cancelDelete()   { deleteConfirm = null; render(); }
-  function confirmDelete(id) {
-    apps = apps.filter(a => a.id !== id);
-    deleteConfirm = null;
-    saveApps(); render();
-  }
+
+  // Actions
+  function quickStatus(id, status) { apps = apps.map(a => a.id === id ? {...a, status} : a); saveApps(); render(); }
+  function editApp(id) { const app = apps.find(a => a.id === id); if (app) openForm(app); }
+  function askDelete(id)     { deleteConfirm = id;   render(); }
+  function cancelDelete()    { deleteConfirm = null; render(); }
+  function confirmDelete(id) { apps = apps.filter(a => a.id !== id); deleteConfirm = null; saveApps(); render(); }
 
   window.quickStatus   = quickStatus;
   window.editApp       = editApp;
