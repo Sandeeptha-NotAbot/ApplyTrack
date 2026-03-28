@@ -13,7 +13,43 @@
     }
     body { background: var(--bg); color: var(--text); font-family: var(--serif); min-height: 100vh; }
 
-    /* HEADER */
+    /* AUTH SCREEN */
+    #auth-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .auth-box {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 10px; padding: 40px; width: 100%; max-width: 380px;
+    }
+    .auth-logo { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 8px; }
+    .auth-title { font-size: 22px; font-weight: 400; color: var(--bright); margin-bottom: 28px; }
+    .auth-tabs { display: flex; gap: 0; margin-bottom: 24px; border-bottom: 1px solid var(--border2); }
+    .auth-tab {
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      padding: 8px 18px; font-family: var(--mono); font-size: 12px; color: var(--dim);
+      cursor: pointer; letter-spacing: .05em; margin-bottom: -1px;
+    }
+    .auth-tab.active { color: var(--bright); border-bottom-color: #58a6ff; }
+    .auth-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .auth-group label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+    .auth-group input {
+      background: var(--bg); border: 1px solid var(--border2); border-radius: 6px;
+      padding: 10px 12px; color: var(--text); font-size: 14px; font-family: var(--serif);
+      outline: none; transition: border-color .15s;
+    }
+    .auth-group input:focus { border-color: #58a6ff; }
+    #auth-error { color: #f85149; font-size: 12px; font-family: var(--mono); margin-bottom: 12px; min-height: 18px; }
+    #btn-auth {
+      width: 100%; background: #238636; color: #fff; border: 1px solid #2ea043;
+      border-radius: 6px; padding: 10px; font-size: 14px; cursor: pointer;
+      font-family: var(--mono); letter-spacing: .05em; transition: opacity .15s;
+      margin-top: 4px;
+    }
+    #btn-auth:disabled { opacity: .5; cursor: default; }
+
+    /* APP SCREEN */
+    #app-screen { display: none; }
+
     header {
       position: sticky; top: 0; z-index: 10; background: var(--bg);
       border-bottom: 1px solid var(--border); padding: 24px 40px 0;
@@ -21,15 +57,21 @@
     .header-top { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 16px; }
     .header-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 4px; }
     h1 { font-size: 26px; font-weight: 400; color: var(--bright); letter-spacing: -.02em; }
+    .header-btns { display: flex; gap: 8px; align-items: center; }
     #btn-add {
       background: #238636; color: #fff; border: 1px solid #2ea043;
       border-radius: 6px; padding: 8px 18px; font-size: 13px; cursor: pointer;
       font-family: var(--mono); letter-spacing: .05em; transition: all .15s;
     }
     #btn-add.cancel { background: var(--surface); color: var(--dim); border-color: var(--border2); }
+    .btn-secondary {
+      background: transparent; color: var(--dim); border: 1px solid var(--border2);
+      border-radius: 6px; padding: 8px 14px; font-size: 13px; cursor: pointer;
+      font-family: var(--mono); letter-spacing: .05em; transition: all .15s;
+    }
+    .btn-secondary:hover { color: var(--text); border-color: var(--dim); }
 
-    /* TABS */
-    .tabs { display: flex; gap: 0; }
+    .tabs { display: flex; }
     .tab-btn {
       background: transparent; border: none; border-bottom: 2px solid transparent;
       padding: 10px 20px; font-size: 13px; font-family: var(--mono); color: var(--dim);
@@ -39,7 +81,6 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* STATS BAR */
     #stats-bar { display: flex; border-bottom: 1px solid var(--border); overflow-x: auto; }
     .stat-btn {
       flex: 1; min-width: 90px; background: transparent; border: none;
@@ -54,7 +95,6 @@
 
     main { padding: 24px 40px; }
 
-    /* FORM */
     #form-wrap {
       background: var(--surface); border: 1px solid var(--border2);
       border-radius: 8px; padding: 24px; margin-bottom: 28px;
@@ -83,7 +123,6 @@
     }
     #btn-save:disabled { opacity: .4; cursor: default; }
 
-    /* CONTROLS */
     #controls { display: flex; gap: 12px; margin-bottom: 20px; }
     #search {
       flex: 1; background: var(--surface); border: 1px solid var(--border2);
@@ -97,7 +136,6 @@
       font-size: 13px; font-family: var(--mono); outline: none;
     }
 
-    /* APP LIST */
     #app-list { display: flex; flex-direction: column; gap: 8px; }
     .app-row {
       background: var(--surface); border: 1px solid var(--border);
@@ -139,113 +177,183 @@
     #empty p { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; }
     #footer { margin-top: 24px; text-align: center; font-size: 11px; color: #2d333b; font-family: var(--mono); letter-spacing: .08em; }
 
-    /* SANKEY TAB */
+    /* loading spinner */
+    #loading {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .1em;
+    }
+
+    /* TOAST */
+    #toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #238636; color: #fff; border-radius: 6px; padding: 10px 22px;
+      font-family: var(--mono); font-size: 13px; opacity: 0;
+      transition: opacity .2s, transform .2s; pointer-events: none; z-index: 999;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #toast.error { background: #8b0000; }
+
+    /* SANKEY */
     #sankey-panel { padding: 32px 40px; }
     #sankey-panel h2 { font-size: 18px; font-weight: 400; color: var(--bright); margin-bottom: 6px; }
-    #sankey-panel .sankey-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .1em; margin-bottom: 32px; }
-    #sankey-svg-wrap {
-      background: var(--surface); border: 1px solid var(--border2);
-      border-radius: 10px; padding: 32px; overflow: auto;
-    }
-    #sankey-empty {
-      text-align: center; padding: 60px 0; color: #484f58;
-      font-family: var(--mono); font-size: 13px; letter-spacing: .08em;
-    }
+    .sankey-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .1em; margin-bottom: 32px; }
+    #sankey-svg-wrap { background: var(--surface); border: 1px solid var(--border2); border-radius: 10px; padding: 32px; overflow: auto; }
+    #sankey-empty { text-align: center; padding: 60px 0; color: #484f58; font-family: var(--mono); font-size: 13px; letter-spacing: .08em; }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-
     @media (max-width: 640px) {
       header { padding: 16px 16px 0; }
       main, #sankey-panel { padding: 16px; }
       .form-grid { grid-template-columns: 1fr; }
       .app-row { grid-template-columns: 1fr; }
+      .header-btns { flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="header-top">
-    <div>
-      <div class="header-sub" id="header-date"></div>
-      <h1>Job Search</h1>
-    </div>
-    <button id="btn-add">+ Add Application</button>
-  </div>
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('tracker')">Tracker</button>
-    <button class="tab-btn" onclick="switchTab('sankey')">Funnel</button>
-  </div>
-</header>
+<!-- Loading -->
+<div id="loading">initializing...</div>
 
-<!-- TRACKER TAB -->
-<div id="tab-tracker" class="tab-panel active">
-  <div id="stats-bar"></div>
-  <main>
-    <div id="form-wrap">
-      <div class="form-title" id="form-title">// new application</div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Company *</label>
-          <input id="f-company" type="text" placeholder="Acme Corp" />
-        </div>
-        <div class="form-group">
-          <label>Role *</label>
-          <input id="f-role" type="text" placeholder="Software Engineer" />
-        </div>
-        <div class="form-group">
-          <label>Job Posting Link</label>
-          <input id="f-link" type="text" placeholder="https://..." />
-        </div>
-        <div class="form-group">
-          <label>Date Applied</label>
-          <input id="f-date" type="date" />
-        </div>
-        <div class="form-group">
-          <label>Status</label>
-          <select id="f-status"></select>
-        </div>
-        <div class="form-group full">
-          <label>Notes</label>
-          <textarea id="f-notes" rows="3" placeholder="Recruiter name, next steps, impressions..."></textarea>
-        </div>
-      </div>
-      <div class="form-actions">
-        <button id="btn-save" disabled>Add Application</button>
-      </div>
+<!-- Auth Screen -->
+<div id="auth-screen" style="display:none">
+  <div class="auth-box">
+    <div class="auth-logo">Job Tracker</div>
+    <div class="auth-title">Sign in to continue</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="setAuthMode('login')">Login</button>
+      <button class="auth-tab" onclick="setAuthMode('signup')">Sign Up</button>
     </div>
-
-    <div id="controls">
-      <input id="search" type="text" placeholder="Search company or role..." />
-      <select id="sort-select">
-        <option value="date_desc">Newest First</option>
-        <option value="date_asc">Oldest First</option>
-        <option value="company">A–Z Company</option>
-      </select>
+    <div class="auth-group">
+      <label>Email</label>
+      <input id="auth-email" type="email" placeholder="you@email.com" autocomplete="email" />
     </div>
-
-    <div id="app-list"></div>
-    <div id="empty">
-      <div class="empty-icon">◌</div>
-      <p id="empty-msg">No applications yet. Add your first one.</p>
+    <div class="auth-group">
+      <label>Password</label>
+      <input id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password" />
     </div>
-    <div id="footer"></div>
-  </main>
-</div>
-
-<!-- SANKEY TAB -->
-<div id="tab-sankey" class="tab-panel">
-  <div id="sankey-panel">
-    <h2>Application Funnel</h2>
-    <div class="sankey-sub">Where your applications end up</div>
-    <div id="sankey-svg-wrap">
-      <div id="sankey-empty">Add some applications to see your funnel.</div>
-      <svg id="sankey-svg" style="display:none;width:100%;"></svg>
-    </div>
+    <div id="auth-error"></div>
+    <button id="btn-auth">Login</button>
   </div>
 </div>
 
-<script>
+<!-- App Screen -->
+<div id="app-screen" style="display:none">
+  <header>
+    <div class="header-top">
+      <div>
+        <div class="header-sub" id="header-date"></div>
+        <h1>Job Search</h1>
+      </div>
+      <div class="header-btns">
+        <span id="user-email" style="font-family:var(--mono);font-size:11px;color:var(--muted);"></span>
+        <button class="btn-secondary" onclick="exportCSV()">↓ Export</button>
+        <button class="btn-secondary" onclick="signOut()">Sign out</button>
+        <button id="btn-add">+ Add Application</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('tracker')">Tracker</button>
+      <button class="tab-btn" onclick="switchTab('sankey')">Funnel</button>
+    </div>
+  </header>
+
+  <div id="tab-tracker" class="tab-panel active">
+    <div id="stats-bar"></div>
+    <main>
+      <div id="form-wrap">
+        <div class="form-title" id="form-title">// new application</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company *</label>
+            <input id="f-company" type="text" placeholder="Acme Corp" />
+          </div>
+          <div class="form-group">
+            <label>Role *</label>
+            <input id="f-role" type="text" placeholder="Software Engineer" />
+          </div>
+          <div class="form-group">
+            <label>Job Posting Link</label>
+            <input id="f-link" type="text" placeholder="https://..." />
+          </div>
+          <div class="form-group">
+            <label>Date Applied</label>
+            <input id="f-date" type="date" />
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="f-status"></select>
+          </div>
+          <div class="form-group full">
+            <label>Notes</label>
+            <textarea id="f-notes" rows="3" placeholder="Recruiter name, next steps, impressions..."></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button id="btn-save" disabled>Add Application</button>
+        </div>
+      </div>
+
+      <div id="controls">
+        <input id="search" type="text" placeholder="Search company or role..." />
+        <select id="sort-select">
+          <option value="date_desc">Newest First</option>
+          <option value="date_asc">Oldest First</option>
+          <option value="company">A–Z Company</option>
+        </select>
+      </div>
+
+      <div id="app-list"></div>
+      <div id="empty">
+        <div class="empty-icon">◌</div>
+        <p id="empty-msg">No applications yet. Add your first one.</p>
+      </div>
+      <div id="footer"></div>
+    </main>
+  </div>
+
+  <div id="tab-sankey" class="tab-panel">
+    <div id="sankey-panel">
+      <h2>Application Funnel</h2>
+      <div class="sankey-sub">Where your applications end up</div>
+      <div id="sankey-svg-wrap">
+        <div id="sankey-empty">Add some applications to see your funnel.</div>
+        <svg id="sankey-svg" style="display:none;width:100%;"></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    onAuthStateChanged, signOut as fbSignOut
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getFirestore, collection, doc, addDoc, setDoc, deleteDoc,
+    onSnapshot, query, orderBy
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // ── YOUR FIREBASE CONFIG ─────────────────────────────────────────────────────
+  const firebaseConfig = {
+    apiKey: "AIzaSyDSil1v_uZ50t2hxVn66npvQnJp6R5GPMs",
+    authDomain: "applytrack-bb48e.firebaseapp.com",
+    projectId: "applytrack-bb48e",
+    storageBucket: "applytrack-bb48e.firebasestorage.app",
+    messagingSenderId: "780421797612",
+    appId: "1:780421797612:web:9094c911a02561e80837c9"
+  };
+  // ────────────────────────────────────────────────────────────────────────────
+
+  const firebaseApp = initializeApp(firebaseConfig);
+  const auth = getAuth(firebaseApp);
+  const db   = getFirestore(firebaseApp);
+
+  // ── CONSTANTS ────────────────────────────────────────────────────────────────
   const STATUSES = [
     { id: "applied",         label: "Applied",                   color: "#6C8EBF", bg: "#1a2535" },
     { id: "interviewed",     label: "Interviewed",               color: "#B8A04A", bg: "#252012" },
@@ -260,54 +368,165 @@
   let editId = null;
   let filterStatus = "all";
   let deleteConfirm = null;
-  let currentTab = "tracker";
+  let currentUser = null;
+  let unsubscribe = null;
 
-  function loadApps() {
-    try { apps = JSON.parse(localStorage.getItem("job_apps") || "[]"); } catch { apps = []; }
+  // ── TOAST ────────────────────────────────────────────────────────────────────
+  let toastTimer;
+  function showToast(msg, isError = false) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.className = "show" + (isError ? " error" : "");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.className = "", 2800);
   }
-  function saveApps() { localStorage.setItem("job_apps", JSON.stringify(apps)); }
 
-  document.getElementById("header-date").textContent =
-    new Date().toLocaleDateString("en-US", { year: "numeric", month: "long" });
+  // ── AUTH UI ──────────────────────────────────────────────────────────────────
+  let authMode = "login";
+  function setAuthMode(mode) {
+    authMode = mode;
+    document.querySelectorAll(".auth-tab").forEach((t, i) => {
+      t.classList.toggle("active", (i === 0 && mode === "login") || (i === 1 && mode === "signup"));
+    });
+    document.getElementById("btn-auth").textContent = mode === "login" ? "Login" : "Create Account";
+    document.getElementById("auth-error").textContent = "";
+  }
+  window.setAuthMode = setAuthMode;
 
-  // Populate form status select
-  const fStatus = document.getElementById("f-status");
-  STATUSES.forEach(s => {
-    const o = document.createElement("option");
-    o.value = s.id; o.textContent = s.label;
-    fStatus.appendChild(o);
+  document.getElementById("btn-auth").addEventListener("click", async () => {
+    const email    = document.getElementById("auth-email").value.trim();
+    const password = document.getElementById("auth-password").value;
+    const errEl    = document.getElementById("auth-error");
+    const btn      = document.getElementById("btn-auth");
+    if (!email || !password) { errEl.textContent = "Please fill in both fields."; return; }
+    btn.disabled = true;
+    errEl.textContent = "";
+    try {
+      if (authMode === "login") {
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
+    } catch (e) {
+      errEl.textContent = friendlyError(e.code);
+      btn.disabled = false;
+    }
   });
 
-  // Build stats bar
-  const statsBar = document.getElementById("stats-bar");
-  STATUSES.forEach(s => {
-    const btn = document.createElement("button");
-    btn.className = "stat-btn";
-    btn.id = "stat-" + s.id;
-    btn.style.setProperty("--scolor", s.color);
-    btn.style.setProperty("--sbg", s.bg);
-    btn.innerHTML = `<div class="stat-num" id="count-${s.id}">0</div><div class="stat-label">${s.label}</div>`;
-    btn.addEventListener("click", () => {
-      filterStatus = filterStatus === s.id ? "all" : s.id;
+  // allow Enter key in auth form
+  ["auth-email","auth-password"].forEach(id => {
+    document.getElementById(id).addEventListener("keydown", e => {
+      if (e.key === "Enter") document.getElementById("btn-auth").click();
+    });
+  });
+
+  function friendlyError(code) {
+    const map = {
+      "auth/invalid-email":          "Invalid email address.",
+      "auth/user-not-found":         "No account with that email.",
+      "auth/wrong-password":         "Incorrect password.",
+      "auth/email-already-in-use":   "Email already in use.",
+      "auth/weak-password":          "Password must be at least 6 characters.",
+      "auth/too-many-requests":      "Too many attempts. Try again later.",
+      "auth/invalid-credential":     "Invalid email or password.",
+    };
+    return map[code] || "Something went wrong. Try again.";
+  }
+
+  async function signOut() {
+    if (unsubscribe) unsubscribe();
+    await fbSignOut(auth);
+  }
+  window.signOut = signOut;
+
+  // ── AUTH STATE ───────────────────────────────────────────────────────────────
+  onAuthStateChanged(auth, user => {
+    document.getElementById("loading").style.display = "none";
+    if (user) {
+      currentUser = user;
+      document.getElementById("auth-screen").style.display = "none";
+      document.getElementById("app-screen").style.display  = "block";
+      document.getElementById("user-email").textContent = user.email;
+      initApp();
+    } else {
+      currentUser = null;
+      apps = [];
+      if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+      document.getElementById("app-screen").style.display  = "none";
+      document.getElementById("auth-screen").style.display = "flex";
+      document.getElementById("auth-password").value = "";
+      document.getElementById("btn-auth").disabled = false;
+    }
+  });
+
+  // ── FIRESTORE HELPERS ────────────────────────────────────────────────────────
+  function appsCol() {
+    return collection(db, "users", currentUser.uid, "applications");
+  }
+
+  async function fsAdd(data) {
+    const ref = await addDoc(appsCol(), data);
+    return ref.id;
+  }
+
+  async function fsUpdate(fsId, data) {
+    await setDoc(doc(db, "users", currentUser.uid, "applications", fsId), data, { merge: true });
+  }
+
+  async function fsDelete(fsId) {
+    await deleteDoc(doc(db, "users", currentUser.uid, "applications", fsId));
+  }
+
+  // ── APP INIT ─────────────────────────────────────────────────────────────────
+  function initApp() {
+    document.getElementById("header-date").textContent =
+      new Date().toLocaleDateString("en-US", { year: "numeric", month: "long" });
+
+    // populate form status select once
+    const fStatus = document.getElementById("f-status");
+    if (!fStatus.options.length) {
+      STATUSES.forEach(s => {
+        const o = document.createElement("option");
+        o.value = s.id; o.textContent = s.label;
+        fStatus.appendChild(o);
+      });
+    }
+
+    // build stats bar once
+    const statsBar = document.getElementById("stats-bar");
+    if (!statsBar.children.length) {
+      STATUSES.forEach(s => {
+        const btn = document.createElement("button");
+        btn.className = "stat-btn"; btn.id = "stat-" + s.id;
+        btn.style.setProperty("--scolor", s.color);
+        btn.style.setProperty("--sbg", s.bg);
+        btn.innerHTML = `<div class="stat-num" id="count-${s.id}">0</div><div class="stat-label">${s.label}</div>`;
+        btn.addEventListener("click", () => { filterStatus = filterStatus === s.id ? "all" : s.id; render(); });
+        statsBar.appendChild(btn);
+      });
+    }
+
+    // realtime listener
+    if (unsubscribe) unsubscribe();
+    const q = query(appsCol());
+    unsubscribe = onSnapshot(q, snapshot => {
+      apps = snapshot.docs.map(d => ({ fsId: d.id, ...d.data() }));
       render();
     });
-    statsBar.appendChild(btn);
-  });
+  }
 
-  // Tab switching
+  // ── TABS ─────────────────────────────────────────────────────────────────────
   function switchTab(tab) {
-    currentTab = tab;
     document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
     document.getElementById("tab-" + tab).classList.add("active");
     document.querySelectorAll(".tab-btn")[tab === "tracker" ? 0 : 1].classList.add("active");
-    // Hide add button on sankey tab
     document.getElementById("btn-add").style.display = tab === "tracker" ? "" : "none";
     if (tab === "sankey") renderSankey();
   }
   window.switchTab = switchTab;
 
-  // Form
+  // ── FORM ─────────────────────────────────────────────────────────────────────
   const formWrap = document.getElementById("form-wrap");
   const btnAdd   = document.getElementById("btn-add");
   const btnSave  = document.getElementById("btn-save");
@@ -316,12 +535,11 @@
   const fLink    = document.getElementById("f-link");
   const fDate    = document.getElementById("f-date");
   const fNotes   = document.getElementById("f-notes");
+  const fStatus  = document.getElementById("f-status");
 
   fDate.value = new Date().toISOString().split("T")[0];
 
-  function validateForm() {
-    btnSave.disabled = !(fCompany.value.trim() && fRole.value.trim());
-  }
+  function validateForm() { btnSave.disabled = !(fCompany.value.trim() && fRole.value.trim()); }
   fCompany.addEventListener("input", validateForm);
   fRole.addEventListener("input", validateForm);
 
@@ -330,7 +548,7 @@
   });
 
   function openForm(app) {
-    editId = app ? app.id : null;
+    editId = app ? app.fsId : null;
     document.getElementById("form-title").textContent = editId ? "// edit application" : "// new application";
     btnSave.textContent = editId ? "Save Changes" : "Add Application";
     fCompany.value = app ? app.company : "";
@@ -353,21 +571,77 @@
     editId = null;
   }
 
-  btnSave.addEventListener("click", () => {
+  btnSave.addEventListener("click", async () => {
     if (!fCompany.value.trim() || !fRole.value.trim()) return;
-    const entry = {
-      id: editId || Date.now(),
+    btnSave.disabled = true;
+    const data = {
       company: fCompany.value.trim(), role: fRole.value.trim(),
       link: fLink.value.trim(), date: fDate.value,
       status: fStatus.value, notes: fNotes.value.trim(),
+      updatedAt: Date.now(),
     };
-    apps = editId ? apps.map(a => a.id === editId ? entry : a) : [...apps, entry];
-    saveApps(); closeForm(); render();
+    try {
+      if (editId) {
+        await fsUpdate(editId, data);
+      } else {
+        data.createdAt = Date.now();
+        await fsAdd(data);
+      }
+      closeForm();
+    } catch(e) {
+      showToast("Save failed. Check your connection.", true);
+    }
+    btnSave.disabled = false;
   });
 
   document.getElementById("search").addEventListener("input", render);
   document.getElementById("sort-select").addEventListener("change", render);
 
+  // ── ROW ACTIONS ───────────────────────────────────────────────────────────────
+  async function quickStatus(fsId, status) {
+    await fsUpdate(fsId, { status, updatedAt: Date.now() });
+  }
+  function editApp(fsId) {
+    const app = apps.find(a => a.fsId === fsId);
+    if (app) openForm(app);
+  }
+  function askDelete(fsId)    { deleteConfirm = fsId; render(); }
+  function cancelDelete()     { deleteConfirm = null; render(); }
+  async function confirmDelete(fsId) {
+    deleteConfirm = null;
+    await fsDelete(fsId);
+  }
+
+  window.quickStatus   = quickStatus;
+  window.editApp       = editApp;
+  window.askDelete     = askDelete;
+  window.cancelDelete  = cancelDelete;
+  window.confirmDelete = confirmDelete;
+
+  // ── EXPORT ────────────────────────────────────────────────────────────────────
+  function exportCSV() {
+    if (apps.length === 0) { showToast("Nothing to export yet!"); return; }
+    const headers = ["company","role","link","date","status","notes"];
+    const rows = apps.map(a =>
+      headers.map(h => {
+        const v = String(a[h] || "");
+        return v.includes(",") || v.includes('"') || v.includes("\n")
+          ? `"${v.replace(/"/g,'""')}"` : v;
+      }).join(",")
+    );
+    const csv  = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href = url;
+    a.download = `job-tracker-${new Date().toISOString().split("T")[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("Exported!");
+  }
+  window.exportCSV = exportCSV;
+
+  // ── RENDER ────────────────────────────────────────────────────────────────────
   function esc(str) {
     return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
   }
@@ -377,8 +651,10 @@
     const sortBy = document.getElementById("sort-select").value;
 
     STATUSES.forEach(s => {
-      document.getElementById("count-" + s.id).textContent = apps.filter(a => a.status === s.id).length;
-      document.getElementById("stat-"  + s.id).classList.toggle("active", filterStatus === s.id);
+      const el = document.getElementById("count-" + s.id);
+      if (el) el.textContent = apps.filter(a => a.status === s.id).length;
+      const btn = document.getElementById("stat-" + s.id);
+      if (btn) btn.classList.toggle("active", filterStatus === s.id);
     });
 
     let filtered = apps
@@ -386,14 +662,15 @@
       .filter(a => !search || a.company.toLowerCase().includes(search) || a.role.toLowerCase().includes(search));
 
     filtered.sort((a, b) => {
-      if (sortBy === "date_desc") return b.date.localeCompare(a.date);
-      if (sortBy === "date_asc")  return a.date.localeCompare(b.date);
-      if (sortBy === "company")   return a.company.localeCompare(b.company);
-      return 0;
+      if (sortBy === "date_desc") return (b.date || "").localeCompare(a.date || "");
+      if (sortBy === "date_asc")  return (a.date || "").localeCompare(b.date || "");
+      if (sortBy === "company")   return (a.company || "").localeCompare(b.company || "");
+      return (b.createdAt || 0) - (a.createdAt || 0);
     });
 
     const list  = document.getElementById("app-list");
     const empty = document.getElementById("empty");
+    if (!list) return;
 
     if (filtered.length === 0) {
       list.innerHTML = "";
@@ -403,7 +680,7 @@
     } else {
       empty.style.display = "none";
       list.innerHTML = filtered.map(app => {
-        const s = byId[app.status];
+        const s = byId[app.status] || byId["applied"];
         const notes = app.notes
           ? "— " + esc(app.notes.length > 60 ? app.notes.slice(0, 60) + "…" : app.notes) : "";
         const linkHtml = app.link
@@ -411,10 +688,10 @@
         const statusOpts = STATUSES.map(st =>
           `<option value="${st.id}"${st.id === app.status ? " selected" : ""}>${st.label}</option>`
         ).join("");
-        const delBtns = deleteConfirm === app.id
-          ? `<button class="btn-confirm" onclick="confirmDelete(${app.id})">confirm</button>
+        const delBtns = deleteConfirm === app.fsId
+          ? `<button class="btn-confirm" onclick="confirmDelete('${app.fsId}')">confirm</button>
              <button class="btn-cancel-del" onclick="cancelDelete()">✕</button>`
-          : `<button class="btn-del" onclick="askDelete(${app.id})">✕</button>`;
+          : `<button class="btn-del" onclick="askDelete('${app.fsId}')">✕</button>`;
         return `
           <div class="app-row">
             <div>
@@ -426,176 +703,99 @@
               </div>
               <div class="app-meta">
                 <span class="badge" style="color:${s.color};background:${s.bg};border-color:${s.color}44">${s.label}</span>
-                <span class="app-date">${esc(app.date)}</span>
+                <span class="app-date">${esc(app.date || "")}</span>
                 ${notes ? `<span class="app-notes">${notes}</span>` : ""}
               </div>
             </div>
             <div>
-              <select class="row-status" onchange="quickStatus(${app.id}, this.value)">${statusOpts}</select>
+              <select class="row-status" onchange="quickStatus('${app.fsId}', this.value)">${statusOpts}</select>
             </div>
             <div class="row-actions">
-              <button class="btn-edit" onclick="editApp(${app.id})">edit</button>
+              <button class="btn-edit" onclick="editApp('${app.fsId}')">edit</button>
               ${delBtns}
             </div>
           </div>`;
       }).join("");
     }
 
-    document.getElementById("footer").textContent = `${apps.length} total · data saved to browser`;
+    document.getElementById("footer").textContent = `${apps.length} total · synced to cloud`;
   }
 
-  // ── SANKEY ──────────────────────────────────────────────────────────────────
+  // ── SANKEY ────────────────────────────────────────────────────────────────────
   function renderSankey() {
-    const svg    = document.getElementById("sankey-svg");
-    const empty  = document.getElementById("sankey-empty");
+    const svg   = document.getElementById("sankey-svg");
+    const empty = document.getElementById("sankey-empty");
     if (apps.length === 0) { svg.style.display = "none"; empty.style.display = "block"; return; }
     empty.style.display = "none"; svg.style.display = "block";
 
-    const total        = apps.length;
-    const interviewed  = apps.filter(a => ["interviewed","rejected_after","offer","accepted"].includes(a.status)).length;
-    const rejBefore    = apps.filter(a => a.status === "rejected_before").length;
-    const noAnswer     = apps.filter(a => a.status === "applied").length;
-    const rejAfter     = apps.filter(a => a.status === "rejected_after").length;
-    const offers       = apps.filter(a => ["offer","accepted"].includes(a.status)).length;
-    const accepted     = apps.filter(a => a.status === "accepted").length;
+    const total       = apps.length;
+    const interviewed = apps.filter(a => ["interviewed","rejected_after","offer","accepted"].includes(a.status)).length;
+    const rejBefore   = apps.filter(a => a.status === "rejected_before").length;
+    const noAnswer    = apps.filter(a => a.status === "applied").length;
+    const rejAfter    = apps.filter(a => a.status === "rejected_after").length;
+    const offers      = apps.filter(a => ["offer","accepted"].includes(a.status)).length;
+    const accepted    = apps.filter(a => a.status === "accepted").length;
 
-    // Layout constants
-    const W = 700, H = 420;
-    const col = [60, 240, 480, 640]; // x positions for node columns
-    const nodeW = 18;
-    const pad = 6;
-
-    // Node heights proportional to count (min 4px if nonzero)
+    const W = 700, H = 420, col = [60, 240, 480, 640], nodeW = 18, pad = 6;
     function nh(n) { return n === 0 ? 0 : Math.max(4, Math.round((n / total) * (H - 80))); }
 
-    // Column 0: Applications (one node)
-    const appH = nh(total);
-    const appY = H / 2 - appH / 2;
-
-    // Column 1: Interviewed | No Answer | Rejected Before
-    const intH  = nh(interviewed);
-    const naH   = nh(noAnswer);
-    const rbH   = nh(rejBefore);
-    const col1Total = intH + naH + rbH + (interviewed > 0 ? pad : 0) + (noAnswer > 0 ? pad : 0);
-    let col1Y = H / 2 - col1Total / 2;
-    const intY  = col1Y;                               col1Y += intH  + (intH  > 0 ? pad : 0);
-    const naY   = col1Y;                               col1Y += naH   + (naH   > 0 ? pad : 0);
-    const rbY   = col1Y;
-
-    // Column 2: Rejected After | Offer
-    const raH   = nh(rejAfter);
-    const ofH   = nh(offers);
+    const appH = nh(total), appY = H / 2 - appH / 2;
+    const intH = nh(interviewed), naH = nh(noAnswer), rbH = nh(rejBefore);
+    const col1Total = intH + naH + rbH + (intH > 0 ? pad : 0) + (naH > 0 ? pad : 0);
+    let c1y = H / 2 - col1Total / 2;
+    const intY = c1y; c1y += intH + (intH > 0 ? pad : 0);
+    const naY  = c1y; c1y += naH  + (naH  > 0 ? pad : 0);
+    const rbY  = c1y;
+    const raH = nh(rejAfter), ofH = nh(offers);
     const col2Total = raH + ofH + (raH > 0 && ofH > 0 ? pad : 0);
-    let col2Y = intY + intH / 2 - col2Total / 2;
-    const raY   = col2Y;                               col2Y += raH + (raH > 0 ? pad : 0);
-    const ofY   = col2Y;
+    let c2y = intY + intH / 2 - col2Total / 2;
+    const raY = c2y; c2y += raH + (raH > 0 ? pad : 0);
+    const ofY = c2y;
+    const acH = nh(accepted), acY = ofY + ofH / 2 - acH / 2;
 
-    // Column 3: Accepted
-    const acH   = nh(accepted);
-    const acY   = ofY + ofH / 2 - acH / 2;
-
-    // Helper: smooth cubic bezier path between two rects
-    function flow(x1, y1, h1, x2, y2, h2, color, opacity=0.55) {
+    function flow(x1, y1, h1, x2, y2, h2, color) {
       if (h1 <= 0 || h2 <= 0) return "";
       const mx = (x1 + x2) / 2;
-      // top edge
-      const t = `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;
-      // bottom edge
-      const b = `L${x2},${y2+h2} C${mx},${y2+h2} ${mx},${y1+h1} ${x1},${y1+h1} Z`;
-      return `<path d="${t} ${b}" fill="${color}" opacity="${opacity}"/>`;
+      return `<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2} L${x2},${y2+h2} C${mx},${y2+h2} ${mx},${y1+h1} ${x1},${y1+h1} Z" fill="${color}" opacity="0.55"/>`;
     }
-
-    // Node rect
-    function node(x, y, h, color, label, count) {
+    function nodeR(x, y, h, color, label, count) {
       if (h <= 0) return "";
-      const labelX = x + nodeW + 8;
-      const labelY = y + h / 2;
-      return `
-        <rect x="${x}" y="${y}" width="${nodeW}" height="${h}" rx="3" fill="${color}"/>
-        <text x="${labelX}" y="${labelY}" dominant-baseline="middle"
-          font-family="'Courier New',monospace" font-size="12" fill="#c9d1d9">
-          ${label} <tspan fill="${color}" font-weight="700">(${count})</tspan>
-        </text>`;
+      return `<rect x="${x}" y="${y}" width="${nodeW}" height="${h}" rx="3" fill="${color}"/>
+        <text x="${x+nodeW+8}" y="${y+h/2}" dominant-baseline="middle" font-family="'Courier New',monospace" font-size="12" fill="#c9d1d9">
+          ${label} <tspan fill="${color}" font-weight="700">(${count})</tspan></text>`;
     }
-
-    // Left-side labels
-    function nodeLeft(x, y, h, color, label, count) {
+    function nodeL(x, y, h, color, label, count) {
       if (h <= 0) return "";
-      const labelX = x - 8;
-      const labelY = y + h / 2;
-      return `
-        <rect x="${x}" y="${y}" width="${nodeW}" height="${h}" rx="3" fill="${color}"/>
-        <text x="${labelX}" y="${labelY}" dominant-baseline="middle" text-anchor="end"
-          font-family="'Courier New',monospace" font-size="12" fill="#c9d1d9">
-          ${label} <tspan fill="${color}" font-weight="700">(${count})</tspan>
-        </text>`;
+      return `<rect x="${x}" y="${y}" width="${nodeW}" height="${h}" rx="3" fill="${color}"/>
+        <text x="${x-8}" y="${y+h/2}" dominant-baseline="middle" text-anchor="end" font-family="'Courier New',monospace" font-size="12" fill="#c9d1d9">
+          ${label} <tspan fill="${color}" font-weight="700">(${count})</tspan></text>`;
     }
 
-    // Flow proportions from Applications (col0) into col1 nodes
-    // stack flows from the single app node
     const appX = col[0] + nodeW;
-    // top portion → interviewed, middle → noAnswer, bottom → rejBefore
-    let flowSrcY = appY;
-
-    function proportionalFlow(srcY, srcH, srcTotal, count) {
-      // slice out a proportional chunk of srcH
-      const h = srcTotal > 0 ? Math.round((count / srcTotal) * srcH) : 0;
-      return { y: srcY, h };
-    }
-
-    const fInt = proportionalFlow(appY, appH, total, interviewed);
-    const fNa  = proportionalFlow(appY + fInt.h, appH - fInt.h, total - interviewed, noAnswer);
+    const fInt = { y: appY, h: Math.round((interviewed / total) * appH) };
+    const fNa  = { y: appY + fInt.h, h: Math.round((noAnswer / total) * appH) };
     const fRb  = { y: appY + fInt.h + fNa.h, h: appH - fInt.h - fNa.h };
-
-    // From interviewed (col1) into col2
     const intX = col[1] + nodeW;
-    const fRa  = proportionalFlow(intY, intH, interviewed, rejAfter);
+    const fRa  = { y: intY, h: Math.round(interviewed > 0 ? (rejAfter / interviewed) * intH : 0) };
     const fOf  = { y: intY + fRa.h, h: intH - fRa.h };
-
-    // From offer (col2) into accepted (col3)
     const ofX  = col[2] + nodeW;
 
-    let svgContent = `
-      ${flow(appX, fInt.y, fInt.h, col[1], intY, intH, "#6C8EBF")}
-      ${flow(appX, fNa.y,  fNa.h,  col[1], naY,  naH,  "#8b949e")}
-      ${flow(appX, fRb.y,  fRb.h,  col[1], rbY,  rbH,  "#8C5C5C")}
-
-      ${flow(intX, fRa.y, fRa.h, col[2], raY, raH, "#BF6C6C")}
-      ${flow(intX, fOf.y, fOf.h, col[2], ofY, ofH, "#6CBF8E")}
-
-      ${flow(ofX, ofY, ofH, col[3], acY, acH, "#4ABBA8")}
-
-      ${nodeLeft(col[0], appY, appH, "#8b949e", "Applications", total)}
-
-      ${node(col[1], intY,  intH, "#6C8EBF", "Interviewed",    interviewed)}
-      ${node(col[1], naY,   naH,  "#8b949e", "No Answer",      noAnswer)}
-      ${node(col[1], rbY,   rbH,  "#8C5C5C", "Rejected Early", rejBefore)}
-
-      ${node(col[2], raY, raH, "#BF6C6C", "Rejected",  rejAfter)}
-      ${node(col[2], ofY, ofH, "#6CBF8E", "Offers",    offers)}
-
-      ${node(col[3], acY, acH, "#4ABBA8", "Accepted",  accepted)}
-    `;
-
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-    svg.innerHTML = svgContent;
+    svg.innerHTML = `
+      ${flow(appX,fInt.y,fInt.h,col[1],intY,intH,"#6C8EBF")}
+      ${flow(appX,fNa.y,fNa.h,col[1],naY,naH,"#8b949e")}
+      ${flow(appX,fRb.y,fRb.h,col[1],rbY,rbH,"#8C5C5C")}
+      ${flow(intX,fRa.y,fRa.h,col[2],raY,raH,"#BF6C6C")}
+      ${flow(intX,fOf.y,fOf.h,col[2],ofY,ofH,"#6CBF8E")}
+      ${flow(ofX,ofY,ofH,col[3],acY,acH,"#4ABBA8")}
+      ${nodeL(col[0],appY,appH,"#8b949e","Applications",total)}
+      ${nodeR(col[1],intY,intH,"#6C8EBF","Interviewed",interviewed)}
+      ${nodeR(col[1],naY,naH,"#8b949e","No Answer",noAnswer)}
+      ${nodeR(col[1],rbY,rbH,"#8C5C5C","Rejected Early",rejBefore)}
+      ${nodeR(col[2],raY,raH,"#BF6C6C","Rejected",rejAfter)}
+      ${nodeR(col[2],ofY,ofH,"#6CBF8E","Offers",offers)}
+      ${nodeR(col[3],acY,acH,"#4ABBA8","Accepted",accepted)}`;
   }
-
-  // Actions
-  function quickStatus(id, status) { apps = apps.map(a => a.id === id ? {...a, status} : a); saveApps(); render(); }
-  function editApp(id) { const app = apps.find(a => a.id === id); if (app) openForm(app); }
-  function askDelete(id)     { deleteConfirm = id;   render(); }
-  function cancelDelete()    { deleteConfirm = null; render(); }
-  function confirmDelete(id) { apps = apps.filter(a => a.id !== id); deleteConfirm = null; saveApps(); render(); }
-
-  window.quickStatus   = quickStatus;
-  window.editApp       = editApp;
-  window.askDelete     = askDelete;
-  window.cancelDelete  = cancelDelete;
-  window.confirmDelete = confirmDelete;
-
-  loadApps();
-  render();
 </script>
 </body>
 </html>
