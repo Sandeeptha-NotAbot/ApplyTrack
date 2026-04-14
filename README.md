@@ -24,8 +24,7 @@ A personal job application tracker built as a single `index.html` — no framewo
 
 ## Setup
 
-1. Clone the repo
-2. Open `https://sandeeptha-notabot.github.io/ApplyTrack/` in a browser — no server needed
-3. Sign up with any email and password
+1. Open `https://sandeeptha-notabot.github.io/ApplyTrack/` in a browser — no server needed
+2. Sign up with any email and password
 
 > Data is stored in Firestore and tied to your account. Nothing is saved in the browser.
