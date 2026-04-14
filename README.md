@@ -1,26 +1,31 @@
-Job Tracker
-A personal job application tracker with a Firebase backend. Built as a single index.html file — no frameworks, no build step.
-Features
+# Job Tracker
 
-Track applications across 6 stages: Applied, Interviewed, Rejected After Interview, Rejected Before Interview, Offer, Accepted
-Sankey diagram to visualize your application funnel
-Add, edit, and delete applications
-Quick status updates inline
-Search and sort
-Export to CSV
-Login / Sign Up with email and password — data is private per account
+A personal job application tracker built as a single `index.html` — no frameworks, no build step, no install. Login with email and password, and your data syncs to the cloud via Firebase.
 
-Stack
+![Tracker](assets/main.png)
+![Funnel](assets/funnel.png)
 
-Vanilla HTML, CSS, JavaScript
-Firebase Authentication (email/password)
-Cloud Firestore (real-time sync)
-Hosted on GitHub Pages
+## Features
 
-Setup
+- **6 application stages** — Applied, Interviewed, Rejected After Interview, Rejected Before Interview, Offer, Accepted
+- **Sankey funnel diagram** to visualize where applications are going
+- **Real-time sync** via Firestore — data persists across devices
+- **Private by design** — each account only sees its own data
+- Add, edit, delete, and quick-update status inline
+- Search and sort by date or company
+- Export to CSV as a backup
 
-Clone the repo
-Open index.html — no install needed
-Sign up with any email and password to get started
+## Stack
 
-Data is stored in Firestore and synced across devices when logged in.
+- Vanilla HTML, CSS, JavaScript (zero dependencies)
+- Firebase Authentication — email/password
+- Cloud Firestore — real-time database
+- GitHub Pages — hosting
+
+## Setup
+
+1. Clone the repo
+2. Open `index.html` in a browser — no server needed
+3. Sign up with any email and password
+
+> Data is stored in Firestore and tied to your account. Nothing is saved in the browser.
